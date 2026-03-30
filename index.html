@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Claude Intelligence Ledger</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#6d4caa',
+        'primary-dim': '#603f9d',
+        'primary-container': '#ebddff',
+        'on-primary': '#fdf5ff',
+        'on-primary-container': '#5f3e9d',
+        'surface': '#f9f9fa',
+        'surface-dim': '#d3dbdf',
+        'surface-container-lowest': '#ffffff',
+        'surface-container-low': '#f2f4f5',
+        'surface-container': '#ebeef0',
+        'surface-container-high': '#e4e9ec',
+        'surface-container-highest': '#dde3e7',
+        'surface-variant': '#dde3e7',
+        'on-surface': '#2d3336',
+        'on-surface-variant': '#596063',
+        'outline': '#757c7f',
+        'outline-variant': '#acb3b6',
+        'tertiary-container': '#e4d7fd',
+        'on-tertiary-container': '#534968',
+      },
+      fontFamily: {
+        'headline': ['Manrope', 'sans-serif'],
+        'body': ['Inter', 'sans-serif'],
+        'label': ['Manrope', 'sans-serif'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  * { box-sizing: border-box; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle; line-height: 1;
+  }
+  body { font-family: 'Inter', sans-serif; background: #f9f9fa; color: #2d3336; }
+
+  /* Shadows */
+  .editorial-shadow { box-shadow: 0 12px 40px rgba(45,51,54,0.06); }
+  .lift-shadow { box-shadow: 0 4px 16px rgba(109,76,170,0.12); }
+
+  /* Gradients */
+  .hero-gradient { background: linear-gradient(135deg, #6d4caa 0%, #4a2e80 100%); }
+
+  /* Nav active pill */
+  .nav-item { position: relative; transition: all 0.18s ease; }
+  .nav-item.active span:last-child { color: #2d3336; font-weight: 700; }
+  .nav-item.active .nav-icon { color: #6d4caa; }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: -24px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 22px; background: #6d4caa; border-radius: 0 3px 3px 0;
+  }
+
+  /* Staggered entrance */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.45s ease forwards; opacity: 0; }
+  .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.12s; }
+  .d3 { animation-delay: 0.19s; } .d4 { animation-delay: 0.26s; }
+  .d5 { animation-delay: 0.33s; } .d6 { animation-delay: 0.40s; }
+  .d7 { animation-delay: 0.47s; } .d8 { animation-delay: 0.54s; }
+
+  /* Summary Drawer */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(45,51,54,0.18);
+    backdrop-filter: blur(6px); z-index: 200; opacity: 0;
+    pointer-events: none; transition: opacity 0.28s ease;
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: all; }
+  .drawer-panel {
+    position: fixed; top: 0; right: 0; height: 100vh; width: 520px;
+    max-width: 95vw; background: #ffffff; z-index: 201;
+    transform: translateX(100%); transition: transform 0.34s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .drawer-panel.open { transform: translateX(0); }
+
+  /* Thumbnail Styles */
+  .thumb-1  { background: linear-gradient(145deg, #6d4caa 0%, #3d2275 100%); }
+  .thumb-2  { background: linear-gradient(145deg, #2a6496 0%, #1a3d5c 100%); }
+  .thumb-3  { background: linear-gradient(145deg, #2d7d52 0%, #1b4731 100%); }
+  .thumb-4  { background: linear-gradient(145deg, #b5551a 0%, #6d3010 100%); }
+  .thumb-5  { background: linear-gradient(145deg, #7e4aaa 0%, #4a1f7a 100%); }
+  .thumb-6  { background: linear-gradient(145deg, #1a7491 0%, #0d3d50 100%); }
+  .thumb-7  { background: linear-gradient(145deg, #7040a0 0%, #3e1e66 100%); }
+  .thumb-8  { background: linear-gradient(145deg, #c26b2b 0%, #7a3c12 100%); }
+  .thumb-9  { background: linear-gradient(145deg, #306ea3 0%, #1a3d5e 100%); }
+  .thumb-10 { background: linear-gradient(145deg, #3d8c6a 0%, #1f4d3a 100%); }
+  .thumb-11 { background: linear-gradient(145deg, #8a3b9e 0%, #4d1a62 100%); }
+  .thumb-12 { background: linear-gradient(145deg, #953d3d 0%, #4f1e1e 100%); }
+  .thumb-13 { background: linear-gradient(145deg, #5b42a0 0%, #2e1d66 100%); }
+  .thumb-14 { background: linear-gradient(145deg, #1e7b6a 0%, #0f3e35 100%); }
+
+  .thumb-noise {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  }
+
+  /* Category Tabs */
+  .cat-tab {
+    padding: 8px 16px; font-family: 'Manrope'; font-size: 13px; font-weight: 600;
+    color: #596063; border-bottom: 2px solid transparent;
+    cursor: pointer; transition: all 0.18s; white-space: nowrap;
+  }
+  .cat-tab:hover { color: #2d3336; }
+  .cat-tab.active { color: #6d4caa; border-bottom-color: #6d4caa; }
+
+  /* Tag chips */
+  .tag-primary { background: #ebddff; color: #5f3e9d; }
+  .tag-tertiary { background: #e4d7fd; color: #534968; }
+  .tag-surface { background: #dde3e7; color: #596063; }
+  .tag-green { background: #e8f5e9; color: #2e7d32; }
+
+  /* Table */
+  .queue-row:hover td { background: #f9f9fa; }
+  .queue-row td { transition: background 0.14s; }
+
+  /* Status badges */
+  .status-done { background: #e8f5e9; color: #2e7d32; }
+  .status-progress { background: #ebddff; color: #6d4caa; }
+  .status-new { background: #fff3e0; color: #e65100; }
+
+  /* Search match highlight */
+  mark { background: #ebddff; color: #4a2e80; border-radius: 2px; padding: 0 1px; }
+
+  /* Hidden */
+  .hidden { display: none !important; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #dde3e7; border-radius: 4px; }
+
+  /* Mobile nav */
+  @media (max-width: 767px) {
+    main { padding-bottom: 72px; }
+  }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 z-40 bg-surface-container-low py-8 px-6 space-y-8">
+
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-on-primary flex-shrink-0">
+      <span class="material-symbols-outlined text-xl">menu_book</span>
+    </div>
+    <div>
+      <h2 class="font-headline text-base font-bold text-on-surface leading-tight">Curator</h2>
+      <p class="text-xs font-medium text-on-surface-variant opacity-70 font-label">Intelligence Ledger</p>
+    </div>
+  </div>
+
+  <button onclick="openNewResearch()" class="w-full bg-primary text-on-primary py-2.5 rounded-md flex items-center justify-center gap-2 text-sm font-headline font-bold hover:bg-primary-dim transition-colors">
+    <span class="material-symbols-outlined text-lg">add</span>
+    <span>New Research</span>
+  </button>
+
+  <nav class="flex-1 space-y-1">
+    <a class="nav-item active flex items-center gap-3 py-2 px-1 rounded cursor-pointer" data-section="insights" onclick="switchSection('insights', this)">
+      <span class="material-symbols-outlined nav-icon">menu_book</span>
+      <span class="font-label text-sm">Insights</span>
+    </a>
+    <a class="nav-item flex items-center gap-3 py-2 px-1 rounded cursor-pointer" data-section="cowork" onclick="switchSection('cowork', this)">
+      <span class="material-symbols-outlined nav-icon text-on-surface-variant">groups</span>
+      <span class="font-label text-sm text-on-surface-variant">Cowork Mode</span>
+    </a>
+    <a class="nav-item flex items-center gap-3 py-2 px-1 rounded cursor-pointer" data-section="claudecode" onclick="switchSection('claudecode', this)">
+      <span class="material-symbols-outlined nav-icon text-on-surface-variant">terminal</span>
+      <span class="font-label text-sm text-on-surface-variant">Claude Code</span>
+    </a>
+    <a class="nav-item flex items-center gap-3 py-2 px-1 rounded cursor-pointer" data-section="mcp" onclick="switchSection('mcp', this)">
+      <span class="material-symbols-outlined nav-icon text-on-surface-variant">extension</span>
+      <span class="font-label text-sm text-on-surface-variant">MCP</span>
+    </a>
+    <a class="nav-item flex items-center gap-3 py-2 px-1 rounded cursor-pointer" data-section="library" onclick="switchSection('library', this)">
+      <span class="material-symbols-outlined nav-icon text-on-surface-variant">video_library</span>
+      <span class="font-label text-sm text-on-surface-variant">Library</span>
+    </a>
+  </nav>
+
+  <div class="space-y-3 pt-4">
+    <div class="h-px bg-surface-variant opacity-60"></div>
+    <a class="flex items-center gap-3 text-on-surface-variant text-sm hover:text-on-surface transition-colors cursor-pointer py-1">
+      <span class="material-symbols-outlined text-lg">description</span>
+      <span class="font-label">Documentation</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant text-sm hover:text-on-surface transition-colors cursor-pointer py-1">
+      <span class="material-symbols-outlined text-lg">help_outline</span>
+      <span class="font-label">Support</span>
+    </a>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="md:ml-64 min-h-screen flex flex-col">
+
+  <!-- TOP NAV -->
+  <header class="flex justify-between items-center w-full px-6 lg:px-10 py-3 sticky top-0 z-50"
+          style="background: rgba(249,249,250,0.88); backdrop-filter: blur(14px); box-shadow: 0 4px 24px rgba(45,51,54,0.05);">
+    <div class="flex items-center gap-6 flex-1">
+      <span class="font-headline font-black text-lg tracking-tight text-primary hidden md:block">Claude Intelligence Ledger</span>
+      <div class="relative w-full max-w-sm">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+        <input id="searchInput" type="text" placeholder="Search research nodes..."
+               class="w-full bg-surface-container-low rounded-md py-2 pl-10 pr-4 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+               oninput="handleSearch(this.value)"/>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 ml-4">
+      <button class="relative text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-on-primary text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
+      </button>
+      <button class="text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <div class="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary font-headline font-bold text-sm flex-shrink-0">L</div>
+    </div>
+  </header>
+
+  <!-- CONTENT AREA -->
+  <div class="flex-1 px-6 lg:px-16 py-10 space-y-0">
+
+    <!-- ── INSIGHTS SECTION ── -->
+    <section id="section-insights" class="space-y-14">
+
+      <!-- Hero -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end fade-up d1">
+        <div class="lg:col-span-8 space-y-5">
+          <span class="font-label text-xs uppercase tracking-widest text-primary font-bold">Research Briefing</span>
+          <h1 class="font-headline font-extrabold tracking-tighter text-on-surface leading-[0.9]" style="font-size: clamp(2.8rem, 7vw, 5rem);">
+            March 2026 <br/><span class="text-on-surface-variant" style="font-weight:800;">Intelligence<br/>Insights.</span>
+          </h1>
+          <p class="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed">
+            The frontier of autonomous coding has shifted. Claude 4.6 Sonnet benchmarks reveal a 30–50% efficiency gain. Cowork gained computer use. Claude Code got Auto Mode. Our curators synthesized <strong class="text-on-surface font-semibold">200+ hours</strong> of video into 14 actionable strategies.
+          </p>
+          <div class="flex items-center gap-4 pt-1">
+            <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings:'FILL' 1;">video_library</span>
+              <span class="font-label font-semibold">20 videos synthesized</span>
+            </div>
+            <div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+            <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings:'FILL' 1;">timer</span>
+              <span class="font-label font-semibold">~70 hours of runtime</span>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-4 fade-up d2">
+          <div class="p-7 hero-gradient rounded-xl editorial-shadow text-on-primary space-y-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+              <span class="font-label font-bold text-xs tracking-widest uppercase opacity-80">Key Takeaway</span>
+            </div>
+            <h3 class="font-headline text-xl font-bold leading-snug">Computer Use + Dispatch turns Claude into a true remote desktop assistant.</h3>
+            <p class="text-sm opacity-75 leading-relaxed">Assign tasks from your phone, come back to finished work on your desktop. The agentic vision is now real.</p>
+            <button onclick="openDrawerById(12)" class="inline-flex items-center gap-1.5 text-sm font-headline font-semibold border-b border-on-primary/30 pb-0.5 hover:border-on-primary transition-all">
+              Read the full brief <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Analysis -->
+      <div class="space-y-6 fade-up d3">
+        <div class="flex justify-between items-end pb-3" style="border-bottom: 1px solid rgba(221,227,231,0.5)">
+          <h2 class="font-headline text-2xl font-bold">Featured Analysis</h2>
+          <button onclick="switchSection('library', document.querySelector('[data-section=library]'))" class="text-primary font-label font-semibold text-sm hover:opacity-75 transition-opacity">View all library items →</button>
+        </div>
+
+        <!-- Category filter tabs -->
+        <div class="flex gap-0 overflow-x-auto -mx-1 px-1 pb-0" style="border-bottom: 1px solid rgba(221,227,231,0.4)">
+          <button class="cat-tab active" onclick="filterCategory('all', this)">All</button>
+          <button class="cat-tab" onclick="filterCategory('cowork', this)">Cowork</button>
+          <button class="cat-tab" onclick="filterCategory('claude-code', this)">Claude Code</button>
+          <button class="cat-tab" onclick="filterCategory('skills', this)">Skills & Plugins</button>
+          <button class="cat-tab" onclick="filterCategory('mcp', this)">MCP</button>
+          <button class="cat-tab" onclick="filterCategory('tips', this)">Tips & Tricks</button>
+        </div>
+
+        <!-- Video grid -->
+        <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <!-- Rendered by JS -->
+        </div>
+        <div id="noResults" class="hidden text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-4xl mb-2 block">search_off</span>
+          <p class="font-label font-semibold">No videos match your search</p>
+        </div>
+      </div>
+
+      <!-- Research Queue -->
+      <div class="space-y-6 fade-up d5 pb-16">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline text-2xl font-bold">Recent Research Queue</h2>
+          <div class="flex gap-1">
+            <button id="sortBtn" onclick="toggleSort()" title="Sort by date" class="p-2 rounded-md hover:bg-surface-container transition-colors text-on-surface-variant">
+              <span class="material-symbols-outlined text-xl">sort</span>
+            </button>
+            <button onclick="filterTable('all')" title="Show all" class="p-2 rounded-md hover:bg-surface-container transition-colors text-on-surface-variant">
+              <span class="material-symbols-outlined text-xl">filter_list</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-hidden bg-surface-container-lowest rounded-xl editorial-shadow">
+          <!-- Status filter pills -->
+          <div class="flex gap-2 px-6 py-3 bg-surface-container-low" style="border-bottom: 1px solid rgba(221,227,231,0.4)">
+            <button onclick="filterTable('all')" class="table-filter active text-xs font-label font-bold px-3 py-1 rounded-full bg-primary text-on-primary transition-all">All</button>
+            <button onclick="filterTable('Summarized')" class="table-filter text-xs font-label font-bold px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">Summarized</button>
+            <button onclick="filterTable('In Progress')" class="table-filter text-xs font-label font-bold px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">In Progress</button>
+            <button onclick="filterTable('New')" class="table-filter text-xs font-label font-bold px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">New</button>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-surface-container-low">
+                <th class="px-6 py-3.5 font-label font-bold text-xs uppercase tracking-wider text-on-surface-variant">Source Title</th>
+                <th class="px-6 py-3.5 font-label font-bold text-xs uppercase tracking-wider text-on-surface-variant hidden sm:table-cell">Category</th>
+                <th class="px-6 py-3.5 font-label font-bold text-xs uppercase tracking-wider text-on-surface-variant hidden md:table-cell">Date Added</th>
+                <th class="px-6 py-3.5 font-label font-bold text-xs uppercase tracking-wider text-on-surface-variant text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="queueBody" class="divide-y divide-surface-container">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COWORK MODE SECTION ── -->
+    <section id="section-cowork" class="hidden space-y-14">
+      <div class="space-y-4 fade-up d1">
+        <span class="font-label text-xs uppercase tracking-widest text-primary font-bold">Feature Focus</span>
+        <h1 class="font-headline font-extrabold tracking-tighter text-on-surface" style="font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 0.95;">
+          Cowork Mode<br/><span class="text-on-surface-variant">Deep Dive.</span>
+        </h1>
+        <p class="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          Cowork turns Claude into a desktop-level autonomous agent for knowledge work. From document creation to computer use, here's everything curated from January–March 2026.
+        </p>
+      </div>
+      <!-- Feature highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 fade-up d2">
+        <div class="p-5 bg-surface-container-lowest rounded-xl editorial-shadow space-y-2">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">computer</span>
+          <h3 class="font-headline font-bold text-base">Computer Use</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Direct keyboard/mouse control of macOS. Launched Mar 23, 2026. Falls back to screen interaction when API connectors don't exist.</p>
+        </div>
+        <div class="p-5 bg-surface-container-lowest rounded-xl editorial-shadow space-y-2">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">phone_iphone</span>
+          <h3 class="font-headline font-bold text-base">Dispatch</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Assign tasks from your phone, come back to finished work on your desktop. Part of the March 2026 agentic push.</p>
+        </div>
+        <div class="p-5 bg-surface-container-lowest rounded-xl editorial-shadow space-y-2">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">extension</span>
+          <h3 class="font-headline font-bold text-base">Plugin Marketplace</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Launched Feb 2026. 1,000+ skills, fastest-growing part of the Cowork ecosystem. Bundles skills, connectors, sub-agents.</p>
+        </div>
+      </div>
+      <div class="space-y-6 fade-up d3">
+        <h2 class="font-headline text-xl font-bold">Cowork Videos</h2>
+        <div id="coworkGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+      </div>
+    </section>
+
+    <!-- ── CLAUDE CODE SECTION ── -->
+    <section id="section-claudecode" class="hidden space-y-14">
+      <div class="space-y-4 fade-up d1">
+        <span class="font-label text-xs uppercase tracking-widest text-primary font-bold">Developer Tools</span>
+        <h1 class="font-headline font-extrabold tracking-tighter text-on-surface" style="font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 0.95;">
+          Claude Code<br/><span class="text-on-surface-variant">Intelligence.</span>
+        </h1>
+        <p class="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          From beginner tutorials to expert workflows. Auto Mode, Agent Teams, agentic loops, hooks, and skills — every major Claude Code topic covered.
+        </p>
+      </div>
+      <!-- Extension points reference -->
+      <div class="p-6 bg-surface-container-lowest rounded-xl editorial-shadow fade-up d2">
+        <h3 class="font-headline font-bold text-base mb-4">The 6 Extension Points</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">MCP</span><span class="text-xs text-on-surface-variant">Connect external tools & data</span></div>
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">Skills</span><span class="text-xs text-on-surface-variant">Reusable workflow instructions</span></div>
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">Hooks</span><span class="text-xs text-on-surface-variant">Lifecycle event automation</span></div>
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">Plugins</span><span class="text-xs text-on-surface-variant">Packaged skill bundles</span></div>
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">Subagents</span><span class="text-xs text-on-surface-variant">Parallel workers</span></div>
+          <div class="p-3 bg-surface-container-low rounded-lg"><span class="font-label font-bold text-xs text-primary block mb-1">Agent Teams</span><span class="text-xs text-on-surface-variant">Collaborative squads (Feb 2026)</span></div>
+        </div>
+      </div>
+      <div class="space-y-6 fade-up d3">
+        <h2 class="font-headline text-xl font-bold">Claude Code Videos</h2>
+        <div id="claudecodeGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+      </div>
+    </section>
+
+    <!-- ── MCP SECTION ── -->
+    <section id="section-mcp" class="hidden space-y-14">
+      <div class="space-y-4 fade-up d1">
+        <span class="font-label text-xs uppercase tracking-widest text-primary font-bold">Protocol Deep Dive</span>
+        <h1 class="font-headline font-extrabold tracking-tighter text-on-surface" style="font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 0.95;">
+          Model Context<br/><span class="text-on-surface-variant">Protocol.</span>
+        </h1>
+        <p class="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          MCP is the universal connector standard — think plugins for Claude. Over 40 YouTube-related MCP servers exist alone. Here's what to know.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-up d2">
+        <div class="p-6 bg-surface-container-lowest rounded-xl editorial-shadow space-y-3">
+          <h3 class="font-headline font-bold">What MCP Is</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">An open standard from Anthropic that lets AI models securely interact with local data, external tools, and databases — GitHub, Slack, Google Drive, and more — through a standardized two-way protocol.</p>
+        </div>
+        <div class="p-6 bg-surface-container-lowest rounded-xl editorial-shadow space-y-3">
+          <h3 class="font-headline font-bold">Quick Start</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Add an MCP server to Claude Code in under 5 minutes via stdio or SSE. Start with pre-built servers from the registry. Build custom ones only when your specific needs aren't covered.</p>
+        </div>
+      </div>
+      <div class="space-y-6 fade-up d3">
+        <h2 class="font-headline text-xl font-bold">MCP Videos & Resources</h2>
+        <div id="mcpGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+      </div>
+    </section>
+
+    <!-- ── LIBRARY SECTION ── -->
+    <section id="section-library" class="hidden space-y-14">
+      <div class="space-y-4 fade-up d1">
+        <span class="font-label text-xs uppercase tracking-widest text-primary font-bold">Full Archive</span>
+        <h1 class="font-headline font-extrabold tracking-tighter text-on-surface" style="font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 0.95;">
+          Complete<br/><span class="text-on-surface-variant">Library.</span>
+        </h1>
+        <p class="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          All 20 videos and resources synthesized for this digest, sorted by view count.
+        </p>
+      </div>
+      <div class="space-y-6 fade-up d2">
+        <div id="libraryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ══════════════════ SUMMARY DRAWER ══════════════════ -->
+<div id="drawerOverlay" class="drawer-overlay" onclick="closeDrawer()"></div>
+<aside id="drawerPanel" class="drawer-panel">
+  <div class="p-6 flex items-center justify-between sticky top-0 bg-white z-10" style="border-bottom: 1px solid rgba(221,227,231,0.5)">
+    <span class="font-label font-bold text-xs uppercase tracking-widest text-on-surface-variant">Video Summary</span>
+    <button onclick="closeDrawer()" class="text-on-surface-variant hover:text-on-surface transition-colors p-1">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <div id="drawerContent" class="p-6 space-y-6 flex-1">
+    <!-- Populated by JS -->
+  </div>
+</aside>
+
+<!-- ══════════════════ MOBILE BOTTOM NAV ══════════════════ -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 flex justify-around py-2.5 px-2"
+     style="background: rgba(249,249,250,0.96); backdrop-filter: blur(14px); border-top: 1px solid rgba(221,227,231,0.5)">
+  <a class="flex flex-col items-center gap-0.5 text-primary cursor-pointer" onclick="switchSection('insights', null)">
+    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">menu_book</span>
+    <span class="text-[10px] font-label font-bold">Insights</span>
+  </a>
+  <a class="flex flex-col items-center gap-0.5 text-on-surface-variant cursor-pointer" onclick="switchSection('cowork', null)">
+    <span class="material-symbols-outlined text-xl">groups</span>
+    <span class="text-[10px] font-label">Cowork</span>
+  </a>
+  <a class="flex flex-col items-center gap-0.5 text-on-surface-variant cursor-pointer" onclick="switchSection('claudecode', null)">
+    <span class="material-symbols-outlined text-xl">terminal</span>
+    <span class="text-[10px] font-label">Code</span>
+  </a>
+  <a class="flex flex-col items-center gap-0.5 text-on-surface-variant cursor-pointer" onclick="switchSection('mcp', null)">
+    <span class="material-symbols-outlined text-xl">extension</span>
+    <span class="text-[10px] font-label">MCP</span>
+  </a>
+  <a class="flex flex-col items-center gap-0.5 text-on-surface-variant cursor-pointer" onclick="switchSection('library', null)">
+    <span class="material-symbols-outlined text-xl">video_library</span>
+    <span class="text-[10px] font-label">Library</span>
+  </a>
+</nav>
+
+<!-- ══════════════════ NEW RESEARCH MODAL ══════════════════ -->
+<div id="newResearchOverlay" class="drawer-overlay" onclick="closeNewResearch()"></div>
+<div id="newResearchModal" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[202] w-full max-w-md">
+  <div class="bg-surface-container-lowest rounded-xl editorial-shadow p-7 space-y-5">
+    <h3 class="font-headline font-bold text-xl">Add New Research</h3>
+    <div class="space-y-3">
+      <input type="text" placeholder="Paste YouTube URL or search term..." class="w-full bg-surface-container-low rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/20"/>
+      <select class="w-full bg-surface-container-low rounded-md px-4 py-3 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20">
+        <option value="">Select category...</option>
+        <option>Claude Code</option><option>Cowork Mode</option>
+        <option>MCP</option><option>Skills & Plugins</option><option>Tips & Tricks</option>
+      </select>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="closeNewResearch()" class="flex-1 py-2.5 rounded-md text-sm font-label font-bold text-on-surface-variant bg-surface-container-low hover:bg-surface-container transition-colors">Cancel</button>
+      <button onclick="closeNewResearch()" class="flex-1 py-2.5 rounded-md text-sm font-label font-bold text-on-primary bg-primary hover:bg-primary-dim transition-colors">Add to Queue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════
+const VIDEOS = [
+  {
+    id: 1,
+    title: "CLAUDE CODE FULL COURSE 4 HOURS: Build & Sell (2026)",
+    channel: "Nick Saraev",
+    views: "772.9K",
+    date: "Feb 12, 2026",
+    duration: "4:02:18",
+    category: "claude-code",
+    tag: "Full Course",
+    tagClass: "tag-primary",
+    thumb: 1,
+    url: "https://www.youtube.com/watch?v=QoQBzR1NIqI",
+    summary: "The most-viewed Claude Code tutorial of 2026. A 4-hour project-based course walking through building and selling a real product with Claude Code — installation, project setup, iterative development, deployment, and monetization. Aimed at people who want to ship, not just learn syntax.",
+    takeaway: "Treat Claude Code as a co-builder, not a chatbot. Give it project specs upfront and iterate in small, testable chunks rather than trying to one-shot a whole feature."
+  },
+  {
+    id: 2,
+    title: "800+ Hours of Learning Claude Code in 8 Minutes",
+    channel: "Edmund Yong",
+    views: "653K",
+    date: "Oct 27, 2025",
+    duration: "8:14",
+    category: "claude-code",
+    tag: "Best Practices",
+    tagClass: "tag-tertiary",
+    thumb: 7,
+    url: "https://www.youtube.com/watch?v=Ffh9OeJ7yxw",
+    summary: "A distilled 'greatest hits' from hundreds of hours of Claude Code experience. Rapid-fire tips covering the most impactful workflows, common mistakes, and the 20% of features that deliver 80% of the value. Highly rewatchable.",
+    takeaway: "Focus on CLAUDE.md files, context management, and breaking tasks into atomic units. The compounding value of good project context cannot be overstated."
+  },
+  {
+    id: 3,
+    title: "Introducing Cowork: Claude Code for the Rest of Your Work",
+    channel: "Anthropic",
+    views: "410K",
+    date: "Jan 12, 2026",
+    duration: "5:30",
+    category: "cowork",
+    tag: "Official",
+    tagClass: "tag-primary",
+    thumb: 5,
+    url: "https://www.youtube.com/watch?v=UAmKyyZ-b9E",
+    summary: "Anthropic's official Cowork launch video. Shows how Cowork brings Claude Code's agentic architecture to non-coding knowledge work: creating documents, organizing files, synthesizing research, scheduling recurring tasks, and delegating multi-step workflows. Excellent overview of the product philosophy.",
+    takeaway: "Cowork is not a chatbot with file access — it's an autonomous agent. Describe the outcome you want, step away, come back to finished work."
+  },
+  {
+    id: 4,
+    title: "Claude Code — Full Tutorial for Beginners",
+    channel: "Tech With Tim",
+    views: "400.1K",
+    date: "Feb 27, 2026",
+    duration: "1:05:42",
+    category: "claude-code",
+    tag: "Tutorial",
+    tagClass: "tag-tertiary",
+    thumb: 2,
+    url: "https://www.youtube.com/watch?v=ntDIxaeo3Wg",
+    summary: "Beginner-friendly walkthrough covering setup, first commands, Plan Mode, context files, and building a real project from scratch. Structured, step-by-step — covers installation on all platforms and every core concept needed to be productive.",
+    takeaway: "Plan Mode is your best friend for complex tasks. Let Claude think through the approach before it starts coding — output quality improves dramatically."
+  },
+  {
+    id: 5,
+    title: "I Got a Private Lesson on Claude Cowork & Claude Code",
+    channel: "Greg Isenberg",
+    views: "314.8K",
+    date: "Jan 23, 2026",
+    duration: "42:10",
+    category: "cowork",
+    tag: "Deep Dive",
+    tagClass: "tag-primary",
+    thumb: 11,
+    url: "https://www.youtube.com/watch?v=DW4a1Cm8nG4",
+    summary: "Greg Isenberg gets an insider walkthrough from an Anthropic contact. Covers how Cowork and Claude Code relate to each other, practical demos of both, and when to use which. Good for understanding the full Claude product landscape from someone who built it.",
+    takeaway: "Use Cowork for knowledge work (docs, research, organization) and Claude Code for software development. Same agentic core — different task surfaces."
+  },
+  {
+    id: 6,
+    title: "Claude Code Clearly Explained (and How to Use It)",
+    channel: "Greg Isenberg",
+    views: "319.2K",
+    date: "Jan 19, 2026",
+    duration: "28:35",
+    category: "claude-code",
+    tag: "Explainer",
+    tagClass: "tag-tertiary",
+    thumb: 9,
+    url: "https://www.youtube.com/watch?v=zxMjOqM7DFs",
+    summary: "Accessible explanation of Claude Code for a non-developer audience. Covers what it is, how it works, and real use cases without requiring programming knowledge. Good companion to the Cowork video.",
+    takeaway: "You don't need to be a developer to benefit from Claude Code — the key is learning to communicate intent clearly and giving Claude proper context."
+  },
+  {
+    id: 7,
+    title: "Every Claude Code Concept Explained for Normal People",
+    channel: "Simon Scrapes",
+    views: "306K",
+    date: "Feb 28, 2026",
+    duration: "32:14",
+    category: "claude-code",
+    tag: "Explainer",
+    tagClass: "tag-tertiary",
+    thumb: 13,
+    url: "https://www.youtube.com/watch?v=ZlDnsf_DOzg",
+    summary: "Demystifies Claude Code jargon: skills, plugins, subagents, hooks, MCP servers, CLAUDE.md, the agent loop, context windows, and more — in plain language. Explains what each concept actually does and when you'd use it. Excellent mental model builder.",
+    takeaway: "The 6 extension points are: MCP (external tools), Skills (reusable workflows), Hooks (lifecycle scripts), Plugins (packaged bundles), Subagents (parallel workers), Agent Teams (collaborative squads). Each solves a different problem."
+  },
+  {
+    id: 8,
+    title: "Claude Code + Nano Banana 2 = Insane $10,000 Websites",
+    channel: "Jack Roberts",
+    views: "257.2K",
+    date: "Mar 14, 2026",
+    duration: "18:22",
+    category: "skills",
+    tag: "Skills & Plugins",
+    tagClass: "tag-surface",
+    thumb: 4,
+    url: "https://www.youtube.com/watch?v=TZUTe7s11-I",
+    summary: "Demonstrates combining Claude Code with the Nano Banana 2 design skill to rapidly produce high-quality, sellable websites. Shows the skill installation workflow and how specialised skills unlock production-quality output without extensive prompting.",
+    takeaway: "Skills and plugins are force multipliers. A well-written SKILL.md produces specialised output that would otherwise require a 200-word prompt every single time."
+  },
+  {
+    id: 9,
+    title: "Stop Paying Anthropic $200/month for Claude Code (Do This Instead)",
+    channel: "Ankita Kulkarni",
+    views: "249.6K",
+    date: "Feb 2026",
+    duration: "14:51",
+    category: "tips",
+    tag: "Cost Optimisation",
+    tagClass: "tag-surface",
+    thumb: 8,
+    url: "https://www.youtube.com/watch?v=jJ9jPzPdyDg",
+    summary: "Cost optimisation strategies for Claude Code power users. Covers API key usage, token budgeting, when to use cheaper models vs. Opus, and alternative setups that can reduce costs 5–10x without sacrificing quality.",
+    takeaway: "Route by model: Haiku 4.5 for simple tasks, Sonnet 4.6 for daily work, Opus 4.6 for complex reasoning. This single habit can cut API bills dramatically."
+  },
+  {
+    id: 10,
+    title: "Agentic Workflows Just Changed AI Automation Forever! (Claude Code)",
+    channel: "Nate Herk | AI Automation",
+    views: "210.1K",
+    date: "Jan 2026",
+    duration: "22:40",
+    category: "skills",
+    tag: "Agentic",
+    tagClass: "tag-tertiary",
+    thumb: 10,
+    url: "https://www.youtube.com/watch?v=AO5aW01DKHo",
+    summary: "Demonstrates Claude Code's subagent and agentic workflow capabilities. Shows how to orchestrate multiple Claude instances working in parallel on different aspects of a project — linting, testing, documentation, bug detection.",
+    takeaway: "Processing 10 files in parallel instead of sequentially dropped wait time from ~30 minutes to ~4 minutes in real testing. Sub-agents are not optional for large projects."
+  },
+  {
+    id: 11,
+    title: "Building Secure AI Agents with MCP: A Claude Implementation Guide",
+    channel: "Discover AI",
+    views: "N/A",
+    date: "Mar 2026",
+    duration: "39:00",
+    category: "mcp",
+    tag: "MCP Guide",
+    tagClass: "tag-primary",
+    thumb: 6,
+    url: "https://www.classcentral.com/course/youtube-claude-desktop-w-secure-mcp-ai-agents-anthropic-388043",
+    summary: "Hands-on 39-minute coding tutorial showing how to build secure connections between Claude and external tools using MCP. Covers building an MCP server from scratch, connecting it to Claude Desktop, and real-world use cases for data analysis and automation.",
+    takeaway: "MCP servers are essentially plugins for Claude. They let it securely access your tools and databases through a standardised protocol — once you build one, the pattern repeats for any API-accessible service."
+  },
+  {
+    id: 12,
+    title: "Computer Use & Dispatch: Claude Can Now Control Your Mac",
+    channel: "Anthropic (Official Demo)",
+    views: "16M+ (social)",
+    date: "Mar 23, 2026",
+    duration: "3:40",
+    category: "cowork",
+    tag: "Feature Launch",
+    tagClass: "tag-primary",
+    thumb: 3,
+    url: "https://claude.com/blog/dispatch-and-computer-use",
+    summary: "Official Anthropic demo of Claude controlling a Mac desktop via keyboard and mouse. A user texts Claude from their phone to export a pitch deck as PDF and attach it to a calendar invite. Claude opens the file, navigates the export dialog, finds Calendar, locates the event, and attaches the PDF — all autonomously. Available on macOS for Pro/Max subscribers.",
+    takeaway: "Computer Use is the universal fallback when no API or MCP connector exists. Prefer structured connections (MCP) when available — they're faster and more reliable. Computer Use is for everything else."
+  },
+  {
+    id: 13,
+    title: "Claude Code on Your Phone Is OFFICIAL (It Changes Everything)",
+    channel: "NetworkChuck",
+    views: "235.6K",
+    date: "Feb 2026",
+    duration: "16:08",
+    category: "tips",
+    tag: "Mobile",
+    tagClass: "tag-surface",
+    thumb: 12,
+    url: "https://www.youtube.com/watch?v=ocQ7ZKhHU5Q",
+    summary: "Demonstrates Dispatch and mobile Claude Code usage. Shows the complete workflow of assigning tasks from your iPhone, monitoring progress, and returning to finished work on your desktop. Makes the 'assign and forget' workflow tangible and real.",
+    takeaway: "Dispatch turns Claude into a remote assistant you can text from anywhere. The setup takes under 10 minutes. This is one of the most underrated productivity unlocks in the March 2026 releases."
+  },
+  {
+    id: 14,
+    title: "Master 95% of Claude Code in 36 Mins (as a Beginner)",
+    channel: "Nate Herk | AI Automation",
+    views: "236.4K",
+    date: "Jan 2026",
+    duration: "36:22",
+    category: "claude-code",
+    tag: "Beginner",
+    tagClass: "tag-tertiary",
+    thumb: 14,
+    url: "https://www.youtube.com/watch?v=saggDHHnmtQ",
+    summary: "Fast-paced but comprehensive beginner tutorial. Covers the essential 95% of Claude Code usage without overwhelming with edge cases. Nate's style is practical and action-oriented — you leave with working knowledge, not theory.",
+    takeaway: "A small set of commands and patterns handles the vast majority of use cases. Don't try to learn everything before shipping."
+  },
+  {
+    id: 15,
+    title: "How I Use Claude Code for Real Engineering",
+    channel: "Matt Pocock",
+    views: "218.1K",
+    date: "Oct 2025",
+    duration: "31:45",
+    category: "claude-code",
+    tag: "Real Workflow",
+    tagClass: "tag-surface",
+    thumb: 2,
+    url: "https://www.youtube.com/watch?v=kZ-zzHVUrO4",
+    summary: "A professional TypeScript developer shows genuine engineering workflows — not toy demos. Covers code reviews, large-scale refactoring, testing strategies, and how Claude handles complex codebases with hundreds of files. One of the most practically useful videos for working developers.",
+    takeaway: "Claude Code shines brightest for refactoring and testing — tasks where context matters more than creativity. Invest time in project context and it pays back immediately."
+  },
+  {
+    id: 16,
+    title: "6 Months of Claude Code Lessons in 27 Minutes",
+    channel: "AI with Avthar",
+    views: "296.5K",
+    date: "Sep 2025",
+    duration: "27:00",
+    category: "claude-code",
+    tag: "Lessons Learned",
+    tagClass: "tag-primary",
+    thumb: 9,
+    url: "https://www.youtube.com/watch?v=rfDvkSkelhg",
+    summary: "Concentrated lessons from 6 months of daily Claude Code use. Covers common pitfalls, effective prompting patterns, and how to structure projects for maximum AI-assisted productivity. Dense and practical — the kind of video you take notes during.",
+    takeaway: "Invest in project structure upfront — clear file organisation, good README, maintained CLAUDE.md. This pays massive dividends in output quality across every session."
+  },
+  {
+    id: 17,
+    title: "Claude Code Essentials (12-Hour Full Course)",
+    channel: "freeCodeCamp / Andrew Brown",
+    views: "New — Mar 26, 2026",
+    date: "Mar 26, 2026",
+    duration: "12:00:00",
+    category: "claude-code",
+    tag: "Full Course",
+    tagClass: "tag-primary",
+    thumb: 1,
+    url: "https://www.youtube.com/freecodecamp",
+    summary: "A 12-hour comprehensive course on the freeCodeCamp YouTube channel covering the full Claude Code ecosystem: the agentic loop, CLI installation (Windows/Linux/Mac), session management, tool usage, context handling, IDE integrations (VS Code, JetBrains), GitHub Actions, MCP, multi-agent systems, and security. Also preps for the 'Claude Certified Architect' exam.",
+    takeaway: "Understand the 'agentic loop' as a mental model: Claude observes → reasons → uses tools → evaluates. Everything else in Claude Code builds on this foundation."
+  },
+  {
+    id: 18,
+    title: "FREE Phone Calls with Claude Code",
+    channel: "NetworkChuck",
+    views: "220.4K",
+    date: "Jan 2026",
+    duration: "19:33",
+    category: "tips",
+    tag: "Creative Use",
+    tagClass: "tag-surface",
+    thumb: 8,
+    url: "https://www.youtube.com/watch?v=cT22fTzotYc",
+    summary: "Creative use case — setting up Claude Code to make and handle phone calls via external API automation. A fun demonstration of the true extensibility of Claude Code when paired with MCP and webhook-capable APIs.",
+    takeaway: "Claude Code's extensibility means it can interact with nearly any API-accessible service. If it has an API, Claude Code can probably automate it."
+  },
+  {
+    id: 19,
+    title: "I Was Wrong About Claude Code (UPDATED AI Workflow Tutorial)",
+    channel: "Chris Raroque",
+    views: "335.6K",
+    date: "Jun 2025",
+    duration: "38:14",
+    category: "claude-code",
+    tag: "Workflow",
+    tagClass: "tag-tertiary",
+    thumb: 13,
+    url: "https://www.youtube.com/watch?v=gNR3XI5Eb0k",
+    summary: "A solo app developer's honest reassessment of Claude Code after initial scepticism. In-depth breakdown of how Claude handles memory, token prediction, and agent statefulness. Particularly good on how project context compounds over time to produce dramatically better results.",
+    takeaway: "Early Claude Code scepticism almost always comes from underinvesting in project context. The value compounds — the more Claude knows about your project, the better every subsequent interaction becomes."
+  },
+  {
+    id: 20,
+    title: "Building Beautiful Websites with Claude Code Is Too Easy",
+    channel: "Nate Herk | AI Automation",
+    views: "216.4K",
+    date: "Feb 2026",
+    duration: "20:15",
+    category: "skills",
+    tag: "Frontend",
+    tagClass: "tag-surface",
+    thumb: 4,
+    url: "https://www.youtube.com/watch?v=86HM0RUWhCk",
+    summary: "Practical demo of using Claude Code for frontend development, combining skills and design templates to produce polished web interfaces quickly. Shows the gap between default Claude output and Claude paired with frontend-specific skills.",
+    takeaway: "Claude Code + frontend design skills can produce production-quality UIs that previously required a dedicated designer. The skills are the secret ingredient."
+  }
+];
+
+const QUEUE = [
+  { title: "Computer Use & Dispatch Demo", type: "YouTube", meta: "3:40", category: "Product Demo", date: "Mar 23, 2026", status: "Summarized", vidId: 12 },
+  { title: "Claude Code Essentials (freeCodeCamp)", type: "YouTube", meta: "12:00:00", category: "Full Course", date: "Mar 26, 2026", status: "New", vidId: 17 },
+  { title: "Every Claude Code Concept Explained", type: "YouTube", meta: "32:14", category: "Fundamentals", date: "Mar 01, 2026", status: "Summarized", vidId: 7 },
+  { title: "Anthropic Developer Day: Full Keynote", type: "YouTube", meta: "1:12:04", category: "Product Announcement", date: "Mar 12, 2026", status: "Summarized", vidId: null },
+  { title: "Claude Code + Nano Banana 2", type: "YouTube", meta: "18:22", category: "Skills & Plugins", date: "Mar 14, 2026", status: "Summarized", vidId: 8 },
+  { title: "CLAUDE CODE FULL COURSE 4 HOURS", type: "YouTube", meta: "4:02:18", category: "Full Course", date: "Feb 12, 2026", status: "Summarized", vidId: 1 },
+  { title: "50+ Cowork Tips for Power Users", type: "Substack", meta: "12,000 words", category: "Power User Guide", date: "Feb 28, 2026", status: "In Progress", vidId: null },
+  { title: "Claude Code Full Tutorial for Beginners", type: "YouTube", meta: "1:05:42", category: "Tutorial", date: "Feb 27, 2026", status: "Summarized", vidId: 4 },
+  { title: "Building Secure AI Agents with MCP", type: "YouTube", meta: "39:00", category: "MCP Guide", date: "Mar 2026", status: "In Progress", vidId: 11 },
+  { title: "Claude Code Documentation (Beta)", type: "Official Docs", meta: "42 Pages", category: "Technical Docs", date: "Mar 10, 2026", status: "In Progress", vidId: null },
+];
+
+// ════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════
+let currentSection = 'insights';
+let currentCategory = 'all';
+let currentSearch = '';
+let currentTableFilter = 'all';
+let sortAsc = false;
+
+// ════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ════════════════════════════════════════════════════
+function renderVideoCard(v, delay) {
+  return `
+  <div class="group space-y-3 fade-up d${delay}" style="cursor:default;">
+    <div class="relative aspect-video rounded-xl overflow-hidden editorial-shadow thumb-${v.thumb} flex items-center justify-center">
+      <div class="thumb-noise absolute inset-0"></div>
+      <button onclick="openDrawerById(${v.id})" class="relative z-10 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all group-hover:scale-110">
+        <span class="material-symbols-outlined text-white text-2xl" style="font-variation-settings:'FILL' 1; margin-left:2px;">play_arrow</span>
+      </button>
+      <div class="absolute bottom-3 right-3 bg-black/65 backdrop-blur-md px-2 py-0.5 rounded text-[11px] text-white font-bold font-label">${v.duration}</div>
+      <div class="absolute top-3 left-3 flex items-center gap-1.5">
+        <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded ${v.tagClass} uppercase">${v.tag}</span>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-on-surface-variant font-label font-medium">${v.views} views • ${v.date}</span>
+      </div>
+      <h3 class="font-headline font-bold text-on-surface leading-snug group-hover:text-primary transition-colors text-base cursor-pointer" onclick="openDrawerById(${v.id})">${v.title}</h3>
+      <div class="flex items-center justify-between pt-1">
+        <span class="text-xs font-label font-semibold text-on-surface-variant">${v.channel}</span>
+        <button onclick="openDrawerById(${v.id})" class="bg-surface-container-lowest text-primary px-3 py-1.5 rounded-md text-xs font-label font-bold hover:bg-primary-container transition-all" style="border: 1px solid rgba(109,76,170,0.15)">
+          View Summary
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGrid(containerId, videos) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!videos.length) {
+    el.innerHTML = '';
+    document.getElementById('noResults') && (document.getElementById('noResults').classList.remove('hidden'));
+    return;
+  }
+  document.getElementById('noResults') && document.getElementById('noResults').classList.add('hidden');
+  el.innerHTML = videos.slice(0, 6).map((v, i) => renderVideoCard(v, Math.min(i+1, 6))).join('');
+}
+
+function renderQueue(items) {
+  const tbody = document.getElementById('queueBody');
+  if (!tbody) return;
+  const typeIcon = t => t === 'YouTube' ? 'play_circle' : t === 'Official Docs' ? 'description' : 'article';
+  const statusBadge = s => {
+    const map = { 'Summarized': 'status-done', 'In Progress': 'status-progress', 'New': 'status-new' };
+    const dot = { 'Summarized': '#4caf50', 'In Progress': '#6d4caa', 'New': '#e65100' };
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-label font-bold rounded-full ${map[s]}">
+      <span style="width:6px;height:6px;border-radius:50%;background:${dot[s]};display:inline-block;flex-shrink:0"></span>${s}</span>`;
+  };
+  tbody.innerHTML = items.map(q => `
+    <tr class="queue-row" style="cursor: ${q.vidId ? 'pointer' : 'default'}" onclick="${q.vidId ? `openDrawerById(${q.vidId})` : ''}">
+      <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded bg-surface-container-low flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-on-surface-variant text-lg">${typeIcon(q.type)}</span>
+          </div>
+          <div>
+            <p class="font-headline font-bold text-on-surface text-sm leading-snug">${q.title}</p>
+            <p class="text-xs text-on-surface-variant font-label">${q.type} • ${q.meta}</p>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-4 hidden sm:table-cell">
+        <span class="text-sm text-on-surface-variant font-body">${q.category}</span>
+      </td>
+      <td class="px-6 py-4 hidden md:table-cell">
+        <span class="text-sm text-on-surface-variant font-label">${q.date}</span>
+      </td>
+      <td class="px-6 py-4 text-right">${statusBadge(q.status)}</td>
+    </tr>`).join('');
+}
+
+// ════════════════════════════════════════════════════
+// FILTERS & SEARCH
+// ════════════════════════════════════════════════════
+function getFilteredVideos() {
+  let vids = VIDEOS;
+  if (currentCategory !== 'all') vids = vids.filter(v => v.category === currentCategory);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    vids = vids.filter(v => v.title.toLowerCase().includes(q) || v.channel.toLowerCase().includes(q) || v.tag.toLowerCase().includes(q));
+  }
+  return vids;
+}
+
+function filterCategory(cat, el) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderGrid('videoGrid', getFilteredVideos());
+}
+
+function handleSearch(val) {
+  currentSearch = val.trim();
+  renderGrid('videoGrid', getFilteredVideos());
+  // also filter queue
+  const filtered = currentSearch
+    ? QUEUE.filter(q => q.title.toLowerCase().includes(currentSearch.toLowerCase()) || q.category.toLowerCase().includes(currentSearch.toLowerCase()))
+    : QUEUE;
+  renderQueue(applyTableFilter(filtered));
+}
+
+function applyTableFilter(items) {
+  if (currentTableFilter === 'all') return items;
+  return items.filter(q => q.status === currentTableFilter);
+}
+
+function filterTable(status) {
+  currentTableFilter = status;
+  document.querySelectorAll('.table-filter').forEach(b => {
+    const isActive = b.textContent.trim() === status || (status === 'all' && b.textContent.trim() === 'All');
+    if (isActive) {
+      b.classList.add('bg-primary', 'text-on-primary');
+      b.classList.remove('bg-surface-container', 'text-on-surface-variant', 'hover:bg-surface-container-high');
+    } else {
+      b.classList.remove('bg-primary', 'text-on-primary');
+      b.classList.add('bg-surface-container', 'text-on-surface-variant', 'hover:bg-surface-container-high');
+    }
+  });
+  renderQueue(applyTableFilter(QUEUE));
+}
+
+function toggleSort() {
+  sortAsc = !sortAsc;
+  const sorted = [...QUEUE].sort((a, b) => {
+    const da = new Date(a.date), db = new Date(b.date);
+    return sortAsc ? da - db : db - da;
+  });
+  renderQueue(applyTableFilter(sorted));
+}
+
+// ════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════
+const SECTIONS = ['insights', 'cowork', 'claudecode', 'mcp', 'library'];
+
+function switchSection(id, triggerEl) {
+  SECTIONS.forEach(s => {
+    const el = document.getElementById('section-' + s);
+    if (el) el.classList.toggle('hidden', s !== id);
+  });
+  // Update sidebar active state
+  document.querySelectorAll('.nav-item').forEach(n => {
+    const isActive = n.dataset.section === id;
+    n.classList.toggle('active', isActive);
+    const icon = n.querySelector('.nav-icon');
+    const label = n.querySelector('span:last-child');
+    if (icon) icon.classList.toggle('text-on-surface-variant', !isActive);
+    if (label) label.classList.toggle('text-on-surface-variant', !isActive);
+  });
+  currentSection = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Render section-specific grids
+  if (id === 'cowork') renderGrid('coworkGrid', VIDEOS.filter(v => v.category === 'cowork'));
+  if (id === 'claudecode') renderGrid('claudecodeGrid', VIDEOS.filter(v => v.category === 'claude-code'));
+  if (id === 'mcp') renderGrid('mcpGrid', VIDEOS.filter(v => v.category === 'mcp'));
+  if (id === 'library') renderGrid('libraryGrid', VIDEOS);
+}
+
+// ════════════════════════════════════════════════════
+// SUMMARY DRAWER
+// ════════════════════════════════════════════════════
+function openDrawerById(id) {
+  const v = VIDEOS.find(x => x.id === id);
+  if (!v) return;
+  const content = document.getElementById('drawerContent');
+  const tagMap = { 'tag-primary': '#ebddff', 'tag-tertiary': '#e4d7fd', 'tag-surface': '#dde3e7', 'tag-green': '#e8f5e9' };
+  const tagTextMap = { 'tag-primary': '#5f3e9d', 'tag-tertiary': '#534968', 'tag-surface': '#596063', 'tag-green': '#2e7d32' };
+  content.innerHTML = `
+    <div class="relative aspect-video rounded-xl overflow-hidden editorial-shadow thumb-${v.thumb} flex items-center justify-center mb-6">
+      <div class="thumb-noise absolute inset-0"></div>
+      <a href="${v.url}" target="_blank" rel="noopener"
+         class="relative z-10 w-14 h-14 rounded-full bg-white/20 hover:bg-white/35 backdrop-blur-sm flex items-center justify-center transition-all group">
+        <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL' 1; margin-left:3px;">play_arrow</span>
+      </a>
+      <div class="absolute bottom-3 right-3 bg-black/65 backdrop-blur-md px-2.5 py-0.5 rounded text-xs text-white font-bold font-label">${v.duration}</div>
+    </div>
+
+    <div class="space-y-1 mb-5">
+      <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded uppercase"
+            style="background:${tagMap[v.tagClass]||'#dde3e7'}; color:${tagTextMap[v.tagClass]||'#596063'}">${v.tag}</span>
+      <h2 class="font-headline font-bold text-xl text-on-surface leading-snug mt-2">${v.title}</h2>
+      <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+        <span class="font-label font-semibold">${v.channel}</span>
+        <span>·</span><span>${v.views} views</span>
+        <span>·</span><span>${v.date}</span>
+      </div>
+    </div>
+
+    <div class="p-5 bg-surface-container-low rounded-xl space-y-2 mb-5">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+        <span class="font-label font-bold text-xs uppercase tracking-widest text-primary">Key Takeaway</span>
+      </div>
+      <p class="font-body text-sm text-on-surface leading-relaxed font-medium">${v.takeaway}</p>
+    </div>
+
+    <div class="space-y-2 mb-6">
+      <h4 class="font-label font-bold text-xs uppercase tracking-wider text-on-surface-variant">Summary</h4>
+      <p class="font-body text-sm text-on-surface leading-relaxed" style="line-height:1.7">${v.summary}</p>
+    </div>
+
+    <a href="${v.url}" target="_blank" rel="noopener"
+       class="flex items-center justify-center gap-2 w-full py-3 rounded-md bg-primary text-on-primary text-sm font-label font-bold hover:bg-primary-dim transition-colors">
+      <span class="material-symbols-outlined text-lg">open_in_new</span>
+      Watch on YouTube
+    </a>
+  `;
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawerPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawerPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ════════════════════════════════════════════════════
+// NEW RESEARCH MODAL
+// ════════════════════════════════════════════════════
+function openNewResearch() {
+  document.getElementById('newResearchModal').classList.remove('hidden');
+  document.getElementById('newResearchOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeNewResearch() {
+  document.getElementById('newResearchModal').classList.add('hidden');
+  document.getElementById('newResearchOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ════════════════════════════════════════════════════
+// KEYBOARD
+// ════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeDrawer(); closeNewResearch(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault(); document.getElementById('searchInput').focus();
+  }
+});
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderGrid('videoGrid', getFilteredVideos());
+  renderQueue(QUEUE);
+});
+</script>
+</body>
+</html>
